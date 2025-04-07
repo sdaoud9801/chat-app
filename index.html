@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hey</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+      اولاد رجب
+    </nav>
+    <div id="messages">
+      <div class="message-left">
+        <div class="message-left__icon"></div>
+        <div class="message-left__text">Sample text message Sample text messageSample text messagSample text messageSample text message</div>
+      </div>
+      <div class="message-left">
+        <div class="message-left__icon"></div>
+        <div class="message-left__text">Sample text message Sample text messageSample text messagSample text messageSample text message</div>
+      </div>
+      <div class="message-left">
+        <div class="message-left__icon"></div>
+        <div class="message-left__text">Sample text message Sample text messageSample text messagSample text messageSample text message</div>
+      </div>
+      <div class="message-left">
+        <div class="message-left__icon"></div>
+        <div class="message-left__text">Sample text message Sample text messageSample text messagSample text messageSample text message</div>
+      </div>
+      <div class="message-left">
+        <div class="message-left__icon"></div>
+        <div class="message-left__text">Sample text message Sample text messageSample text messagSample text messageSample text message</div>
+      </div>
+    </div>
+    <form action="" id="form">
+        <textarea name="message" id="message"></textarea>
+        <input type="submit" value="Send">
+    </form>
+    
+</body>
+<script src="/socket.io/socket.io.js"></script>
+
+
+<script>
+  const socket = io();
+  let form = document.getElementById("form");
+  let input = document.getElementById("message");
+  form.addEventListener("submit",(e)=>{
+    e.preventDefault();
+    if(input.value === "") { 
+      console.log("no");
+    } else {
+      socket.emit("message",input.value)
+    }
+  })
+  socket.on("delivered",(text)=>{
+    createText(text);
+    input.value = "";
+  })
+
+  function createText(text){
+    let messages = document.getElementById("messages");
+    // create parent-div 
+    let messageDiv = document.createElement("div");
+    messageDiv.className = "message-left";
+    let iconDiv = document.createElement("div");
+    iconDiv.className = "message-left__icon";
+    let textDiv = document.createElement("div");
+    textDiv.className = "message-left__text";
+    let textNode = document.createTextNode(text);
+    textDiv.appendChild(textNode);
+    messageDiv.appendChild(iconDiv);
+    messageDiv.appendChild(textDiv);
+    textDiv.appendChild(textNode);
+    messages.appendChild(messageDiv); 
+  }
+</script>
+</html>
