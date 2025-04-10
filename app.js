@@ -6,7 +6,11 @@ const { Server } = require('socket.io');
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
-app.use(express.static('public'));
+app.use(express.static('public',{
+  setHeaders: function(res,path,stat){
+    res.set("Content-Type","text/css");
+  }
+}));
 
 app.get('/', (req, res) => {
   res.sendFile(join(__dirname, 'index.html'));
